@@ -1,0 +1,28 @@
+int nonDivisibleSubset(int k, vector<int> s) {
+    int n = s.size();
+    vector<int> residual(n,0);
+    
+/*make an array which stores the remainders of various elements on division with k
+make an map to count the no. of occurences of the remainder terms*/
+    
+    unordered_map<int, int> mp;
+    for(int i = 0; i<n; i++){
+        residual[i] = s[i]%k;
+        mp[residual[i]]++;
+    }
+    int count = 0;
+    
+    for(int i =1; i<=k/2; i++){
+        count+=max(mp[i], mp[k-i]);
+    }
+    
+//if k is even, then count only one occurrence of remainder k/2.
+//if there are any terms with remainder 0, count them only once
+    
+    if(k%2 == 0)
+        count = count - mp[k/2] + 1;
+    
+    if(mp[0] >=1)
+        count++;
+    return count;
+}
