@@ -1,0 +1,38 @@
+You are the benevolent ruler of Rankhacker Castle, and today you're distributing bread. 
+Your subjects are in a line, and some of them already have some loaves. 
+Times are hard and your castle's food stocks are dwindling, so you must distribute as few loaves as possible according to the following rules:
+
+Every time you give a loaf of bread to some person , you must also give a loaf of bread to the person immediately in front of or behind them in the line 
+(i.e., persons (i+1) or(i-1)).
+After all the bread is distributed, each person must have an even number of loaves.
+
+Given the number of loaves already held by each citizen, find and print the minimum number of loaves you must distribute to satisfy the two rules above. 
+If this is not possible, print NO.
+
+
+
+string fairRations(vector<int> B) {
+    int oddcount = 0, start = 0, end = 0, n = B.size(), accum = 0;
+    bool alreadyone = false;                              ex. 0 3 2 4 6 7 --> distance between two odd numbers is 5-1 = 4 --> need 8 disturbution to accomplish the job 
+    for(int i = 0; i<n; i++){
+        if(B[i]%2 == 1) oddcount++;
+    }
+    int i = 0;
+    while(i<n){
+        if(B[i]%2 == 1 && alreadyone == false){         // record the start and end point of two odd numbers
+            start = i;
+            alreadyone = true;
+        }
+        else if(B[i]%2 == 1 && alreadyone == true){
+            end = i;
+            alreadyone = false;
+            accum+=(end-start);                         // calculate the total distance between every pair of odd numbers
+        }
+        i++;
+    }
+    if(oddcount %2 == 1) return "NO";                   // if odd numbers count is odd--> no possibile to do distrubution
+    
+    return to_string(accum*2);                  
+    
+
+}
